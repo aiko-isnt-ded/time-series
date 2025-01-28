@@ -1,0 +1,62 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+## pkgs
+
+CTRL/CMD + ALT + I --\> Chunk de código
+
+```{r}
+# Para ejecutar toda una línea de código
+# CTRL + SHIFT + ENTER
+library(tidyverse)
+library(fpp3)
+
+```
+
+## Tourism
+
+```{r}
+mpg
+tourism
+```
+
+```{r}
+distinct(tourism, State, Region)
+```
+
+```{r}
+victoria_lakes <- filter(tourism, State == "Victoria", Region == "Lakes")
+victoria_lakes
+```
+
+```{r}
+summarise(group_by(as_tibble(victoria_lakes), Purpose),
+          "Average Trips" = mean(Trips)
+          )
+```
+
+```{r}
+# Now with pipes
+tourism |> 
+  filter(State == "Victoria", Region == "Lakes") |> 
+  as_tibble() |> 
+  group_by(Purpose) |> 
+  summarise("Average Trips" = mean(Trips))
+```
+
+```{r}
+tourism |> 
+  filter(State == "Victoria", Region == "Lakes") |> 
+  autoplot(Trips) + # El + le agrega una capa adicional a las gráficas
+  facet_wrap(vars(Purpose), scale = "free_y") +
+  theme(legend.position = "")
+```
+
+```{r}
+tourism |> 
+  filter(State == "Victoria", Region == "Lakes") |> 
+  write_csv("victoria.csv")
+```
