@@ -1,0 +1,25 @@
+---
+title: "Decomposition"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(fpp3)
+```
+## Gas
+
+```{r}
+aus_production |> 
+  autoplot(Gas)
+
+aus_production |> 
+  model(
+    # ~ se utiliza para definir funciones
+    gas_stl = STL(Gas ~ trend(window=9) + season())  
+  ) |> 
+  components() |> 
+  autoplot()
+```
+
